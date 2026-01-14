@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "Boîte Noire.h"
+#include "BoÃ®te Noire.h"
 
 
-// SAUVEGARDE D’URGENCE
+// SAUVEGARDE Dâ€™URGENCE
 
 void dump_memory(BoiteNoire *b)
 {
@@ -12,10 +12,10 @@ void dump_memory(BoiteNoire *b)
     if (fichier == NULL)
     {
         perror("Erreur ouverture crash.bin\n");
-        exit(1); //Tout s'arrête là au cas où fichier = NULL et l'erreur sera affiché grace à perror
+        exit(1); //Tout s'arrÃªte lÃ  au cas oÃ¹ fichier = NULL et l'erreur sera affichÃ© grace Ã  perror
     }
 
-    Frame *courant = b->debut;          //Pointeur courant pointant vers la première frame
+    Frame *courant = b->debut;          //Pointeur courant pointant vers la premiÃ¨re frame
     while (courant != NULL)
     {
         fwrite(courant, sizeof(Frame), 1, fichier);
@@ -37,7 +37,7 @@ void crash_analyse()// Analyse des fichiers du crash.bin
     if (fichier == NULL)
     {
         perror("Aucun fichier crash.bin trouve\n");
-        exit(2);//Tout s'arrête là au cas où f=NULL et l'erreur sera affiché grace à perror
+        exit(2);//Tout s'arrÃªte lÃ  au cas oÃ¹ f=NULL et l'erreur sera affichÃ© grace Ã  perror
     }
 
     Frame temp;
@@ -60,8 +60,16 @@ void crash_analyse()// Analyse des fichiers du crash.bin
     if (compteur > 0)
     {
         printf("\n===== ANALYSE POST-MORTEM =====\n");
+        if(temp.vitesse==0)
+        {
+            printf("\tArret du vehicule\n");
+        }
+        else if(temp_max>110)
+        {
+            printf("\tSurchauffe\n");
+        }
         printf("Vitesse moyenne : %.2f km/h\n", somme_vitesse / compteur);
-        printf("Temperature maximale : %.2f °C\n", temp_max);
+        printf("Temperature maximale : %.2f Â°C\n", temp_max);
     } else
     {
         printf("Fichier vide\n");
