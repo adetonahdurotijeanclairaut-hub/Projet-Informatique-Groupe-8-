@@ -1,44 +1,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "Boîte Noire.h"
+#include "BoÃ®te Noire.h"
 
 
 void add_frame(BoiteNoire *b, float v, float t)         // Pour ajouter une nouvelle frame
 {
-    Frame *new = malloc(sizeof(Frame));         //allocation mémoire pour une frame à chaque seconde
+    Frame *new = malloc(sizeof(Frame));         //allocation mÃ©moire pour une frame Ã  chaque seconde
     if (new == NULL)
     {
-        perror("Echec de l'allocation mémoire");        //l'erreur sera affiché grace à perror
+        perror("Echec de l'allocation mÃ©moire");        //l'erreur sera affichÃ© grace Ã  perror
         return;
     }
 
-    new->timestamp = time(NULL);            //Remplissage de la frame avec les données envoyées
+    new->timestamp = time(NULL);            //Remplissage de la frame avec les donnÃ©es envoyÃ©es
     new->vitesse = v;
     new->temperature = t;
     new->suivant = NULL;
 
     if (b->debut == NULL)               //Aucune frame
     {
-        b->debut = new;              //Création de la première frame
+        b->debut = new;              //CrÃ©ation de la premiÃ¨re frame
     }
     else
     {
-        Frame *tmp = b->debut;          //Pointeur tempon pointant vers la première frame
-        while (tmp->suivant != NULL)    //Tant qu'il existe une frame à la suite de celle pointée
+        Frame *tmp = b->debut;          //Pointeur tempon pointant vers la premiÃ¨re frame
+        while (tmp->suivant != NULL)    //Tant qu'il existe une frame Ã  la suite de celle pointÃ©e
         {
             tmp = tmp->suivant;         //Pointeur tempon pointant vers la frame suivante
         }
-            tmp->suivant = new;            //Crée une nouvelle frame à la suite de celle pointée
+            tmp->suivant = new;            //CrÃ©e une nouvelle frame Ã  la suite de celle pointÃ©e
 
     }
+    // VISUALISATION
+     time_t maintenant;
+    struct tm *date;
+     time(&maintenant);                 // Obtenir le timestamp actuel
+    date = localtime(&maintenant);    // Convertir en date lisible
+
+    printf("Enregistrement Frame [Time:%02d:%02d:%02d ]  ", date->tm_hour,date->tm_min,date->tm_sec);
 
     b->nb_frames++;
+    printf("Memoire : %d/10\n", b->nb_frames);
 
-    // VISUALISATION
-    printf("Enregistrement Frame [Time=%ld] (Memoire : %d/10)\n",new->timestamp, b->nb_frames);
-
-    // ROTATION MÉMOIRE
+    // ROTATION MÃ‰MOIRE
     if (b->nb_frames > 10)
     {
         printf("Rotation : Frame ancienne ecrasee.\n");
@@ -53,9 +58,9 @@ void delete_first(BoiteNoire *b)
         return;
     }
 
-    Frame *tmp = b->debut;          //Pointeur tempon pointant vers la première frame
-    b->debut = tmp->suivant;        //Le pointeur pointant vers la première frame, pointe maintenant vers la suivante qui devient donc la première
-    free(tmp);                      //Libération de l'espace allouer à l'encienne première frame
+    Frame *tmp = b->debut;          //Pointeur tempon pointant vers la premiÃ¨re frame
+    b->debut = tmp->suivant;        //Le pointeur pointant vers la premiÃ¨re frame, pointe maintenant vers la suivante qui devient donc la premiÃ¨re
+    free(tmp);                      //LibÃ©ration de l'espace allouer Ã  l'encienne premiÃ¨re frame
     b->nb_frames--;                 //Le nombre de frame d'iminue d'un
 }
 
